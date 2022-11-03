@@ -1,4 +1,4 @@
-package com.midas.midashackathon.domain.user.service;
+package com.midas.midashackathon.domain.auth.service;
 
 import com.midas.midashackathon.domain.department.entity.DepartmentEntity;
 import com.midas.midashackathon.domain.department.exception.InvalidDepartmentException;

@@ -46,6 +46,7 @@ public class SecurityConfiguration {
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/department/{department-code}/users").authenticated()
                 .antMatchers("/department/**").hasRole("ADMIN")
+                .antMatchers("/works/**").authenticated()
                 .anyRequest().authenticated();
 
         return http.build();

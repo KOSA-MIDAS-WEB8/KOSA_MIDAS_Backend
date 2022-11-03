@@ -5,6 +5,7 @@ import com.midas.midashackathon.domain.user.entity.UserEntity;
 import com.midas.midashackathon.domain.user.facade.UserFacade;
 import com.midas.midashackathon.domain.work.entity.TodoEntity;
 import com.midas.midashackathon.domain.work.entity.WorkEntity;
+import com.midas.midashackathon.domain.work.exception.PlanNotQualifiedException;
 import com.midas.midashackathon.domain.work.exception.TodoNotFoundException;
 import com.midas.midashackathon.domain.work.exception.WorkClosedException;
 import com.midas.midashackathon.domain.work.presentation.dto.WorkCommonDto;
@@ -73,11 +74,20 @@ public class WorkService {
 
     @Transactional
     public void updatePlan(String date, WorkCommonDto request) {
+        UserEntity user = userFacade.queryCurrentUser();
+        DepartmentEntity department = user.getDepartment();
         LocalDate queryDate = LocalDate.parse(date, Formatters.DATE_FORMATTER);
-        WorkEntity work = getWorkOrCreated(userFacade.queryCurrentUser(), queryDate);
+        WorkEntity work = getWorkOrCreated(user, queryDate);
 
-        work.updatePlan(LocalTime.parse(request.getStart(), Formatters.HOUR_MINUTE_FORMATTER),
-                LocalTime.parse(request.getEnd(), Formatters.HOUR_MINUTE_FORMATTER));
+        LocalTime start = LocalTime.parse(request.getStart(), Formatters.HOUR_MINUTE_FORMATTER);
+        LocalTime end = LocalTime.parse(request.getEnd(), Formatters.HOUR_MINUTE_FORMATTER);
+
+        if(start.isBefore(department.getCoreTimeStart().toLocalTime()) &&
+                end.isAfter(department.getCoreTimeStart().toLocalTime().plusHours(department.getRequiredCoreTime()))) {
+            work.updatePlan(start, end);
+        } else {
+            throw PlanNotQualifiedException.EXCEPTION;
+        }
     }
 
     @Transactional

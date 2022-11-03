@@ -1,9 +1,9 @@
-package com.midas.midashackathon.domain.user.presentation;
+package com.midas.midashackathon.domain.auth.presentation;
 
 import com.midas.midashackathon.domain.user.presentation.dto.request.SignInRequest;
 import com.midas.midashackathon.domain.user.presentation.dto.request.SignUpRequest;
 import com.midas.midashackathon.domain.user.presentation.dto.response.SignInResponse;
-import com.midas.midashackathon.domain.user.service.AuthService;
+import com.midas.midashackathon.domain.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

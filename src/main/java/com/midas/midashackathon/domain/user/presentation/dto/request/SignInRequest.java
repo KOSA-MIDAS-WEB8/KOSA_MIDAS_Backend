@@ -14,6 +14,6 @@ public class SignInRequest {
     private String id;
 
     @NotNull
-    @Size(min = 8, max = 32, message = "아이디는 8자리 이상 32자리 이하여야 합니다")
+    @Size(min = 8, max = 32, message = "비밀번호는 8자리 이상 32자리 이하여야 합니다")
     private String password;
 }
