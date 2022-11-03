@@ -26,7 +26,8 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests()
 
-
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/department/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         return http.build();

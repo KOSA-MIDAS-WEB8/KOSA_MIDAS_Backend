@@ -12,4 +12,8 @@ public class UserAuthentication extends UsernamePasswordAuthenticationToken {
                 (GrantedAuthority) () -> String.format("ROLE_%s", user.getRole().name())
         ));
     }
+
+    public Long getUserId() {
+        return ((UserEntity) getPrincipal()).getId();
+    }
 }
