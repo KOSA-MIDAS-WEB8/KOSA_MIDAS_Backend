@@ -3,11 +3,11 @@ package com.midas.midashackathon.domain.department.service;
 import com.midas.midashackathon.domain.department.entity.DepartmentEntity;
 import com.midas.midashackathon.domain.department.exception.DepartmentNotFoundException;
 import com.midas.midashackathon.domain.department.presentation.dto.request.DepartmentEditRequest;
-import com.midas.midashackathon.domain.department.presentation.dto.response.DepartmentListResponse;
-import com.midas.midashackathon.domain.department.presentation.dto.response.DepartmentResponse;
-import com.midas.midashackathon.domain.department.presentation.dto.response.MemberListResponse;
-import com.midas.midashackathon.domain.department.presentation.dto.response.MemberResponse;
+import com.midas.midashackathon.domain.department.presentation.dto.response.*;
 import com.midas.midashackathon.domain.department.repository.DepartmentRepository;
+import com.midas.midashackathon.domain.work.presentation.dto.WorkCommonDto;
+import com.midas.midashackathon.domain.work.presentation.dto.response.TodoResponse;
+import com.midas.midashackathon.global.utils.Formatters;
 import com.midas.midashackathon.global.utils.StringGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -67,6 +67,26 @@ public class DepartmentService {
                         MemberResponse.builder()
                                 .userId(it.getId())
                                 .name(it.getName())
+                                .activity(it.getTodoList().stream().collect(Collectors.groupingBy(grp -> grp.getConductAt().toLocalDate()))
+                                        .entrySet().stream().map(entry -> ActivityResponse.builder()
+                                                .date(Formatters.DATE_FORMATTER.format(entry.getKey()))
+                                                .plan(it.getWorks().stream().filter(plan -> plan.getDate().isEqual(entry.getKey()))
+                                                        .map(plan -> WorkCommonDto.builder()
+                                                                .start(HOUR_MINUTE_FORMATTER.format(plan.getPlannedStart().toLocalTime()))
+                                                                .end(HOUR_MINUTE_FORMATTER.format(plan.getPlannedEnd().toLocalTime()))
+                                                                .build())
+                                                        .collect(Collectors.toList()).get(0))
+                                                .todoList(entry.getValue().stream().filter(todo -> !todo.isVisibleToTeam()).map(todo -> TodoResponse.builder()
+                                                                .id(todo.getId())
+                                                                .title(todo.getName())
+                                                                .description(todo.getDescription())
+                                                                .time(HOUR_MINUTE_FORMATTER.format(todo.getConductAt().toLocalTime()))
+                                                                .visibleToTeam(null)
+                                                                .status(todo.getStatus().toString())
+                                                                .build())
+                                                        .collect(Collectors.toList()))
+                                                .build())
+                                        .collect(Collectors.toList()))
                                 .build())
                         .collect(Collectors.toList()))
                 .build();

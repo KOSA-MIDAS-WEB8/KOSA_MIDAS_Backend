@@ -2,6 +2,7 @@ package com.midas.midashackathon.domain.user.entity;
 
 import com.midas.midashackathon.domain.department.entity.DepartmentEntity;
 import com.midas.midashackathon.domain.user.type.Role;
+import com.midas.midashackathon.domain.work.entity.TodoEntity;
 import com.midas.midashackathon.domain.work.entity.WorkEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,5 +46,14 @@ public class UserEntity {
     }
     public void removeWork(WorkEntity work) {
         works.remove(work);
+    }
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<TodoEntity> todoList;
+    public void addTodo(TodoEntity todo) {
+        todoList.add(todo);
+    }
+    public void removeTodo(TodoEntity todo) {
+        todoList.remove(todo);
     }
 }
