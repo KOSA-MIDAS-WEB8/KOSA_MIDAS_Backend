@@ -38,7 +38,11 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>de.brendamour</groupId>
+            <artifactId>jpasskit</artifactId>
+            <version>0.3.0</version>
+        </dependency>
 
         <dependency>
             <groupId>com.h2database</groupId>

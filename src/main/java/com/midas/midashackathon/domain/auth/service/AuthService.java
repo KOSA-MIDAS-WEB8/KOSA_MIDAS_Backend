@@ -56,6 +56,7 @@ public class AuthService {
 
         return SignInResponse.builder()
                 .accessToken(jwtProvider.generateAccessToken(user.getId()))
+                .role(user.getRole())
                 .build();
     }
 }
