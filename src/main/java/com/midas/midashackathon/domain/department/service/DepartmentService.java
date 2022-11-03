@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +99,7 @@ public class DepartmentService {
         DepartmentEntity department = departmentRepository.findById(departmentCode)
                 .orElseThrow(() -> DepartmentNotFoundException.EXCEPTION);
 
-        department.update(request.getName(), Time.valueOf(LocalTime.parse(request.getCoreTimeStart(), HOUR_MINUTE_FORMATTER)),
-                request.getCoreTimeHours(), request.getWorkHour(), Time.valueOf(LocalTime.parse(request.getDefaultStartHour(), HOUR_MINUTE_FORMATTER)));
+        department.update(request.getName(), Time.valueOf(LocalTime.from(HOUR_MINUTE_FORMATTER.parse(request.getCoreTimeStart()))),
+                request.getCoreTimeHours(), request.getWorkHour(), Time.valueOf(LocalTime.from(HOUR_MINUTE_FORMATTER.parse(request.getDefaultStartHour()))));
     }
 }

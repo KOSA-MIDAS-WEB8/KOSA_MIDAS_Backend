@@ -27,7 +27,7 @@ public class DepartmentController {
         departmentService.createDepartment(request);
     }
 
-    @GetMapping("/{department-code}")
+    @GetMapping("/{department-code}/users")
     public MemberListResponse getAllMembersOfDepartment(@PathVariable("department-code") String departmentCode) {
         return departmentService.getAllMembersOfDepartment(departmentCode);
     }
