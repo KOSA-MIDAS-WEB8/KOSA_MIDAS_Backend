@@ -57,7 +57,7 @@ public class WorkService {
 
     @Transactional
     public WorkStatusResponse getStatus(String date) {
-        LocalDate queryDate = LocalDate.parse(date, Formatters.DATE_FORMATTER);
+        LocalDate queryDate = LocalDate.from(Formatters.DATE_FORMATTER.parse(date));
         WorkEntity work = getWorkOrCreated(userFacade.queryCurrentUser(), queryDate);
 
         return WorkStatusResponse.builder()
@@ -76,7 +76,7 @@ public class WorkService {
     public void updatePlan(String date, WorkCommonDto request) {
         UserEntity user = userFacade.queryCurrentUser();
         DepartmentEntity department = user.getDepartment();
-        LocalDate queryDate = LocalDate.parse(date, Formatters.DATE_FORMATTER);
+        LocalDate queryDate = LocalDate.from(Formatters.DATE_FORMATTER.parse(date));
         WorkEntity work = getWorkOrCreated(user, queryDate);
 
         LocalTime start = LocalTime.parse(request.getStart(), Formatters.HOUR_MINUTE_FORMATTER);
@@ -92,7 +92,7 @@ public class WorkService {
 
     @Transactional
     public void updateActual(String date, WorkStatusRequest request) {
-        LocalDate queryDate = LocalDate.parse(date, Formatters.DATE_FORMATTER);
+        LocalDate queryDate = LocalDate.from(Formatters.DATE_FORMATTER.parse(date));
         WorkEntity work = getWorkOrCreated(userFacade.queryCurrentUser(), queryDate);
 
         if(!LocalDate.now().isEqual(queryDate))
