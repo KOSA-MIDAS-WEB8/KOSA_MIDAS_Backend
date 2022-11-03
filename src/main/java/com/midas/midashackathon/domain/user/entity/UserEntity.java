@@ -56,4 +56,17 @@ public class UserEntity {
     public void removeTodo(TodoEntity todo) {
         todoList.remove(todo);
     }
+
+    public void updateUser(String name, DepartmentEntity department, Boolean isAdmin) {
+        if(name != null)
+            this.name = name;
+
+        if(department != null) {
+            this.department = department;
+            department.addMember(this);
+        }
+
+        if(isAdmin != null)
+            role = isAdmin ? Role.ADMIN : Role.NORMAL;
+    }
 }
