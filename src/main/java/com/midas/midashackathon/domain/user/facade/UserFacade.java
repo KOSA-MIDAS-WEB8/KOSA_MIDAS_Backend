@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Component
 public class UserFacade {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public UserEntity queryCurrentUser() {
