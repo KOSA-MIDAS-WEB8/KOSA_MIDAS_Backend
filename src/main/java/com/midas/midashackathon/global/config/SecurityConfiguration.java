@@ -5,6 +5,8 @@ import com.midas.midashackathon.global.security.SecurityFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -50,7 +52,9 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests()
 
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/sign-up").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/sign-in").permitAll()
+                .antMatchers(HttpMethod.GET, "/auth/user-info").authenticated()
                 .antMatchers("/department/{department-code}/users").authenticated()
                 .antMatchers("/department/**").hasRole("ADMIN")
                 .antMatchers("/works/**").authenticated()

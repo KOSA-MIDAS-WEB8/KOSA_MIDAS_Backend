@@ -24,8 +24,6 @@ public class SecurityFilter extends OncePerRequestFilter {
             String bearerToken = jwtProvider.getTokenFromHeader(request.getHeader("Authorization"));
             if (bearerToken != null) {
                 Authentication authentication = jwtProvider.getAuthenticationFromToken(bearerToken);
-                System.out.println("Authorities:");
-                System.out.println(authentication.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
             filterChain.doFilter(request, response);

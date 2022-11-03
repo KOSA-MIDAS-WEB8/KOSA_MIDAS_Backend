@@ -34,10 +34,10 @@ public class DepartmentService {
                 .departmentList(departments.stream().map(it -> DepartmentResponse.builder()
                                 .code(it.getCode())
                                 .name(it.getName())
-                                .coreTimeStart(HOUR_MINUTE_FORMATTER.format(it.getCoreTimeStart().toInstant()))
+                                .coreTimeStart(HOUR_MINUTE_FORMATTER.format(it.getCoreTimeStart().toLocalTime()))
                                 .coreTimeHours(it.getRequiredCoreTime())
                                 .workHour(it.getRequiredWorkTime())
-                                .defaultStartHour(HOUR_MINUTE_FORMATTER.format(it.getDefaultStartTime().toInstant()))
+                                .defaultStartHour(HOUR_MINUTE_FORMATTER.format(it.getDefaultStartTime().toLocalTime()))
                                 .memberCount(it.getMembers().size())
                                 .build())
                         .collect(Collectors.toList()))
@@ -48,9 +48,10 @@ public class DepartmentService {
     public void createDepartment(DepartmentEditRequest request) {
         DepartmentEntity department = DepartmentEntity.builder()
                 .code(StringGenerator.generateUpper(6))
-                .coreTimeStart(Time.valueOf(LocalTime.parse(request.getCoreTimeStart(), HOUR_MINUTE_FORMATTER)))
+                .coreTimeStart(Time.valueOf(LocalTime.from(HOUR_MINUTE_FORMATTER.parse(request.getCoreTimeStart()))))
                 .requiredCoreTime(request.getCoreTimeHours())
                 .requiredWorkTime(request.getWorkHour())
+                .defaultStartTime(Time.valueOf(LocalTime.from(HOUR_MINUTE_FORMATTER.parse(request.getDefaultStartHour()))))
                 .members(new ArrayList<>())
                 .build();
 

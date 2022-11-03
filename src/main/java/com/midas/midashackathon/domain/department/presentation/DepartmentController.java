@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
-@RequestMapping("/department")
+@RequestMapping("/departments")
 @RestController
 public class DepartmentController {
     private final DepartmentService departmentService;

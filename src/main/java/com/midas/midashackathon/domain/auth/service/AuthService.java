@@ -1,11 +1,14 @@
 package com.midas.midashackathon.domain.auth.service;
 
+import com.midas.midashackathon.domain.admin.presentation.dto.response.DepartmentInfo;
+import com.midas.midashackathon.domain.admin.presentation.dto.response.UserResponse;
 import com.midas.midashackathon.domain.department.entity.DepartmentEntity;
 import com.midas.midashackathon.domain.department.exception.InvalidDepartmentException;
 import com.midas.midashackathon.domain.department.repository.DepartmentRepository;
 import com.midas.midashackathon.domain.user.entity.UserEntity;
 import com.midas.midashackathon.domain.user.exception.UserAlreadyExistsException;
 import com.midas.midashackathon.domain.user.exception.UserNotFoundException;
+import com.midas.midashackathon.domain.user.facade.UserFacade;
 import com.midas.midashackathon.domain.user.presentation.dto.request.SignInRequest;
 import com.midas.midashackathon.domain.user.presentation.dto.request.SignUpRequest;
 import com.midas.midashackathon.domain.user.presentation.dto.response.SignInResponse;
@@ -24,6 +27,7 @@ public class AuthService {
     private final DepartmentRepository departmentRepository;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
+    private final UserFacade userFacade;
 
     @Transactional
     public void signUp(SignUpRequest request) {
@@ -57,6 +61,22 @@ public class AuthService {
         return SignInResponse.builder()
                 .accessToken(jwtProvider.generateAccessToken(user.getId()))
                 .role(user.getRole())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponse getUserInfo() {
+        UserEntity user = userFacade.queryCurrentUser();
+
+        return UserResponse.builder()
+                .id(user.getId())
+                .accountId(user.getAccountId())
+                .phoneNumber(user.getPhoneNumber())
+                .isAdmin("ADMIN".equals(user.getRole().name()))
+                .departmentInfo(DepartmentInfo.builder()
+                        .name(user.getDepartment().getName())
+                        .code(user.getDepartment().getCode())
+                        .build())
                 .build();
     }
 }

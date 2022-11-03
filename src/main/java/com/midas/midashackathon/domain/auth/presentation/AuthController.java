@@ -1,5 +1,6 @@
 package com.midas.midashackathon.domain.auth.presentation;
 
+import com.midas.midashackathon.domain.admin.presentation.dto.response.UserResponse;
 import com.midas.midashackathon.domain.user.presentation.dto.request.SignInRequest;
 import com.midas.midashackathon.domain.user.presentation.dto.request.SignUpRequest;
 import com.midas.midashackathon.domain.user.presentation.dto.response.SignInResponse;
@@ -28,4 +29,8 @@ public class AuthController {
         return authService.signIn(request);
     }
 
+    @GetMapping("/user-info")
+    public UserResponse getUserInfo() {
+        return authService.getUserInfo();
+    }
 }
